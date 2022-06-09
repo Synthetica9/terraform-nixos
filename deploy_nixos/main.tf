@@ -111,6 +111,17 @@ variable "delete_older_than" {
   default     = "+1"
 }
 
+variable "method" {
+  type        = string
+  description = "Whether to switch in-place or switch on reboot"
+  default     = "switch"
+
+  validation = {
+    condition     = length(regexall("^(switch|boot)$", var.type)) > 0
+    error_message = "Should be either switch or boot"
+  }
+}
+
 # --------------------------------------------------------------------------
 
 locals {
@@ -196,7 +207,7 @@ resource "null_resource" "deploy_nixos" {
       var.target_port,
       local.build_on_target,
       local.ssh_private_key == "" ? "-" : local.ssh_private_key,
-      "switch",
+      var.method,
       var.delete_older_than,
       ],
       local.extra_build_args
@@ -211,4 +222,3 @@ output "id" {
   description = "random ID that changes on every nixos deployment"
   value       = null_resource.deploy_nixos.id
 }
-
