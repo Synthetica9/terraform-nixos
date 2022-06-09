@@ -116,10 +116,10 @@ variable "method" {
   description = "Whether to switch in-place or switch on reboot"
   default     = "switch"
 
-  validation = {
-    condition     = length(regexall("^(switch|boot)$", var.type)) > 0
-    error_message = "Should be either switch or boot"
-  }
+  # validation = {
+  #   condition     = length(regexall("^(switch|boot)$", var.type)) > 0
+  #   error_message = "Should be either switch or boot"
+  # }
 }
 
 # --------------------------------------------------------------------------
